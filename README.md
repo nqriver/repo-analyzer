@@ -5,4 +5,4 @@ Jeżeli skorzystasz z tego szablonu to prosimy o zastosowanie się do poniższyc
 1. Stwórz **prywatny** fork tego repozytorium https://bitbucket.org/unityttech/recruitment/fork
 2. Utwórz nową gałąź i użyj jej dodając swoje zmiany.
 3. Utwórz pull request z gałęzi utworzonej w punkcie 2. do gałęzi `master` z **TWOJEGO REPOZYTORIUM**.
-4. Dodaj nam dostęp do odczytu do Twojego repozytorium. Szczegółowe informacje znajdziesz w pliku PDF, który od nas otrzymałeś.
+4. Dodaj nam dostęp do zapisu do Twojego repozytorium. Szczegółowe informacje znajdziesz w pliku PDF, który od nas otrzymałeś.
