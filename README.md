@@ -1,8 +1,19 @@
-To jest szablon zadania rekrutacyjnego Unity-t. Nie musisz się ograniczać do niego, jednakże może on przyspieszyć stworzenie rozwiązania. Możesz zmienić język programowania z Java na dwolony język programowania działający na JVM (jednakże preferujemy Java lub Kotlin).
+# Rekrutacja Unity-t
 
-Jeżeli skorzystasz z tego szablonu to prosimy o zastosowanie się do poniższych instrukcji:
+To jest szablon zadania rekrutacyjnego Unity-t.
+
+Zadanie można rozwiązać w języku Java lub języku Kotlin. Do konfiguracji i kompilacji projektu używamy Gradle i Gradle
+Kotlin DSL (nie Groovy).
+
+Prosimy o zastosowanie się do poniższych instrukcji:
 
 1. Stwórz **prywatny** fork tego repozytorium https://bitbucket.org/unityttech/recruitment/fork
-2. Utwórz nową gałąź i użyj jej dodając swoje zmiany.
-3. Utwórz pull request z gałęzi utworzonej w punkcie 2. do gałęzi `master` z **TWOJEGO REPOZYTORIUM**.
-4. Dodaj nam dostęp do zapisu do Twojego repozytorium. Szczegółowe informacje znajdziesz w pliku PDF, który od nas otrzymałeś.
+2. Utwórz nową gałąź `solution` i użyj jej dodając swoje zmiany.
+3. Utwórz pull request z gałęzi `solution` utworzonej w punkcie 2. do gałęzi `master` z **TWOJEGO REPOZYTORIUM** a
+   nie **unityttech/recruitment**.
+4. Dodaj nam dostęp do odczytu do Twojego repozytorium. Szczegółowe informacje znajdziesz w pliku PDF, który od nas
+   otrzymałeś.
+
+> **UWAGA** Na gałęzi "master" nie powinno być żadnych Twoich zmian.
+
+> Wszelkie niestosowanie się do instrukcji może skutować wykluczeniem z procesu rekrutacji.
