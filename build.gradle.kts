@@ -14,7 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:4.0.2")
 }
 
 tasks.withType<Test> {
