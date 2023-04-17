@@ -1,22 +1,12 @@
 plugins {
-    id("org.springframework.boot") version "2.3.1.RELEASE"
     java
+    id("org.springframework.boot") version "3.0.5"
+    id("io.spring.dependency-management") version "1.1.0"
 }
-
-apply { plugin("io.spring.dependency-management") }
 
 group = "pl.unityt.recruitment"
 version = "0.0.1-SNAPSHOT"
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks {
-    named<Test>("test") {
-        useJUnitPlatform()
-    }
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -24,7 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
