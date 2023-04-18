@@ -45,7 +45,6 @@ class RepositoryControllerTest {
 
         givenExistingGithubRepositoryOf(userUnderTest, repoUnderTest);
 
-
         // when
         String jsonResponse = mockMvc.perform(MockMvcRequestBuilders.get("/repositories/{user}/{repo}", userUnderTest, repoUnderTest))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -59,7 +58,7 @@ class RepositoryControllerTest {
 
     @Test
     public void shouldReturn404_whenRepositoryDoesNotExist() throws Exception {
-
+        // given
         String userUnderTest = "user";
         String repoUnderTest = "repo";
 
@@ -75,7 +74,7 @@ class RepositoryControllerTest {
 
     @Test
     public void shouldReturn501_whenRemoteGithubApiRespondsWith5xx() throws Exception {
-
+        // given
         String userUnderTest = "user";
         String repoUnderTest = "repo";
 
@@ -90,7 +89,7 @@ class RepositoryControllerTest {
 
     @Test
     public void shouldTrigger403_whenTryingToAccessPrivateRepository() throws Exception {
-
+        // given
         String userUnderTest = "user";
         String repoUnderTest = "repo";
 
@@ -105,7 +104,7 @@ class RepositoryControllerTest {
 
     @Test
     public void shouldTrigger400_whenRepositoryIsMovedPermanently() throws Exception {
-
+        // given
         String userUnderTest = "user";
         String repoUnderTest = "repo";
 
