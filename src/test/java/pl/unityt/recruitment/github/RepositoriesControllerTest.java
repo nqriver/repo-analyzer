@@ -39,7 +39,7 @@ class RepositoriesControllerTest {
 
     @Test
     public void shouldReturnRepositoryDetails() throws Exception {
-
+        // given
         String userUnderTest = "user";
         String repoUnderTest = "repo";
 
@@ -58,7 +58,7 @@ class RepositoriesControllerTest {
     }
 
     @Test
-    public void shouldTrigger404_whenRepositoryDoesNotExist() throws Exception {
+    public void shouldReturn404_whenRepositoryDoesNotExist() throws Exception {
 
         String userUnderTest = "user";
         String repoUnderTest = "repo";
@@ -74,7 +74,7 @@ class RepositoriesControllerTest {
     }
 
     @Test
-    public void shouldTrigger501_whenRemoteGithubApiRespondsWith5xx() throws Exception {
+    public void shouldReturn501_whenRemoteGithubApiRespondsWith5xx() throws Exception {
 
         String userUnderTest = "user";
         String repoUnderTest = "repo";
@@ -86,6 +86,36 @@ class RepositoriesControllerTest {
 
                 // then
                 .andExpect(MockMvcResultMatchers.status().isServiceUnavailable());
+    }
+
+    @Test
+    public void shouldTrigger403_whenTryingToAccessPrivateRepository() throws Exception {
+
+        String userUnderTest = "user";
+        String repoUnderTest = "repo";
+
+        givenUnauthorizedAccessToGithubRepositoryOf(userUnderTest, repoUnderTest);
+
+        // when
+        mockMvc.perform(MockMvcRequestBuilders.get("/repositories/{user}/{repo}", userUnderTest, repoUnderTest))
+
+                // then
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    public void shouldTrigger400_whenRepositoryIsMovedPermanently() throws Exception {
+
+        String userUnderTest = "user";
+        String repoUnderTest = "repo";
+
+        givenMovedRepositoryOf(userUnderTest, repoUnderTest);
+
+        // when
+        mockMvc.perform(MockMvcRequestBuilders.get("/repositories/{user}/{repo}", userUnderTest, repoUnderTest))
+
+                // then
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     private void assertResponseMatches(String jsonResponse) throws JsonProcessingException {
@@ -103,23 +133,33 @@ class RepositoriesControllerTest {
     private void givenExistingGithubRepositoryOf(String userUnderTest, String repoUnderTest) {
         stubFor(get(urlEqualTo(String.format("/repos/%s/%s", userUnderTest, repoUnderTest)))
                 .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json").withBody(get200JsonResponse())));
+                        .withHeader("Content-Type", "application/json").withBody(getSample200JsonResponse())));
     }
 
     private void givenNotExistingGithubRepositoryOf(String userUnderTest, String repoUnderTest) {
-        stubFor(get(urlEqualTo(String.format("/repos/%s/%s", userUnderTest, repoUnderTest)))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json").withStatus(HttpStatus.NOT_FOUND)));
+        givenResponseOfStatusOnGetRepository(userUnderTest, repoUnderTest, HttpStatus.NOT_FOUND);
     }
 
     private void givenClientErrorOnGithubApiCallFor(String userUnderTest, String repoUnderTest) {
-        stubFor(get(urlEqualTo(String.format("/repos/%s/%s", userUnderTest, repoUnderTest)))
+        givenResponseOfStatusOnGetRepository(userUnderTest, repoUnderTest, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private void givenUnauthorizedAccessToGithubRepositoryOf(String userUnderTest, String repoUnderTest) {
+        givenResponseOfStatusOnGetRepository(userUnderTest, repoUnderTest, HttpStatus.FORBIDDEN);
+    }
+
+    private void givenMovedRepositoryOf(String userUnderTest, String repoUnderTest) {
+        givenResponseOfStatusOnGetRepository(userUnderTest, repoUnderTest, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    private void givenResponseOfStatusOnGetRepository(String user, String repository, int httpStatus) {
+        stubFor(get(urlEqualTo(String.format("/repos/%s/%s", user, repository)))
                 .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json").withStatus(HttpStatus.INTERNAL_SERVER_ERROR)));
+                        .withHeader("Content-Type", "application/json").withStatus(httpStatus)));
     }
 
 
-    private String get200JsonResponse() {
+    private String getSample200JsonResponse() {
         try {
             return resourceLoader.getResource(GITHUB_API_200_RESPONSE_PATH).getContentAsString(StandardCharsets.UTF_8);
         } catch (IOException exception) {

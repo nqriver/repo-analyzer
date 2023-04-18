@@ -32,6 +32,7 @@ public class GithubClientConfiguration {
         return WebClient.builder()
                 .baseUrl(githubApiUrl)
                 .defaultHeader(githubApiVersionKey, githubApiVersionValue)
+                .defaultStatusHandler(HttpStatusCode::is3xxRedirection, this::mapRedirection)
                 .defaultStatusHandler(HttpStatusCode::isError, this::mapClientError)
                 .build();
     }
@@ -44,10 +45,14 @@ public class GithubClientConfiguration {
         return httpServiceProxyFactory.createClient(GithubClient.class);
     }
 
-    private Mono<Throwable> mapClientError(ClientResponse resp) {
-        if (resp.statusCode().is5xxServerError()) {
-            return Mono.just(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, String.format(ERROR_MESSAGE_TEMPLATE, resp.statusCode())));
+    private Mono<Throwable> mapClientError(ClientResponse response) {
+        if (response.statusCode().is5xxServerError()) {
+            return Mono.just(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
         }
-        return Mono.just(new ResponseStatusException(resp.statusCode(), String.format(ERROR_MESSAGE_TEMPLATE, resp.statusCode())));
+        return Mono.just(new ResponseStatusException(response.statusCode(), String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
+    }
+
+    private Mono<Throwable> mapRedirection(ClientResponse response) {
+        return Mono.just(new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
     }
 }
