@@ -1,15 +1,15 @@
-package pl.unityt.recruitment.github;
+package pl.unityt.recruitment.github.repo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.unityt.recruitment.github.client.GithubClient;
-import pl.unityt.recruitment.github.client.RepositoryDetails;
+import pl.unityt.recruitment.github.repo.client.GithubClient;
+import pl.unityt.recruitment.github.repo.client.RepositoryDetails;
 
 @Service
 public class RepositoryFacade {
 
-    private final Logger LOG = LoggerFactory.getLogger(RepositoryFacade.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(RepositoryFacade.class.getName());
 
 
     private final GithubClient githubClient;

@@ -1,4 +1,4 @@
-package pl.unityt.recruitment.github.client;
+package pl.unityt.recruitment.github.repo.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

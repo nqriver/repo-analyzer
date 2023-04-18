@@ -1,6 +1,6 @@
-package pl.unityt.recruitment.github;
+package pl.unityt.recruitment.github.repo;
 
-import pl.unityt.recruitment.github.client.RepositoryDetails;
+import pl.unityt.recruitment.github.repo.client.RepositoryDetails;
 
 import java.time.Instant;
 

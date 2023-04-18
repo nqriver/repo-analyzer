@@ -1,4 +1,4 @@
-package pl.unityt.recruitment.github.client;
+package pl.unityt.recruitment.github.repo.client;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

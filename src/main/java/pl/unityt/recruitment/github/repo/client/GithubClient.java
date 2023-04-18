@@ -1,4 +1,4 @@
-package pl.unityt.recruitment.github.client;
+package pl.unityt.recruitment.github.repo.client;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;

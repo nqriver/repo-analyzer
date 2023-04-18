@@ -1,4 +1,4 @@
-package pl.unityt.recruitment.github;
+package pl.unityt.recruitment.github.repo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 @AutoConfigureMockMvc
 @AutoConfigureWireMock(port = 7070)
 @ActiveProfiles("test")
-class RepositoriesControllerTest {
+class RepositoryControllerTest {
 
     public static final String GITHUB_API_200_RESPONSE_PATH = "classpath:mock-responses/response200.json";
     @Autowired
