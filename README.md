@@ -24,23 +24,23 @@ docker-compose up -d
 docker-compose ps
 ```
 
-You should see something similar to this:
+* You should see something similar to this:
 ```bash
 Name                Command        State           Ports
 -------------------------------------------------------------------------
 recruitment_my-app_1   java -jar app.jar   Up      0.0.0.0:8080->8080/tcp
 ```
 
-* Hit the endpoint with sample data
-Existing repo
-```bash
-curl http://localhost:8080/repositories/ddd-by-examples/library
-```
+* Hit the endpoint with sample data 
+  * Existing repo
+  ```bash
+  curl http://localhost:8080/repositories/ddd-by-examples/library
+  ```
 
-Nonexistent repo
-```bash
-curl http://localhost:8080/repositories/imaginary-user/imaginary-repo
-```
+   * Nonexistent repo
+  ```bash
+  curl http://localhost:8080/repositories/imaginary-user/imaginary-repo
+  ```
 
 * Finally, stop the container
 ```bash
