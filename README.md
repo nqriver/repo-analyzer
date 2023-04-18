@@ -1,19 +1,48 @@
-# Rekrutacja Unity-t
+# About
+This project exposes a REST API endpoint to fetch github repository details of a given user and repo name.
 
-To jest szablon zadania rekrutacyjnego Unity-t.
+# Technologies
+* Java 17
+* Gradle
+* Spring Boot v. 3.0.5
+* Docker/docker-compose
 
-Zadanie można rozwiązać w języku Java lub języku Kotlin. Do konfiguracji i kompilacji projektu używamy Gradle i Gradle
-Kotlin DSL (nie Groovy).
+# How to run
 
-Prosimy o zastosowanie się do poniższych instrukcji:
+* Build project using gradle or gradle wrapper
+```bash
+./gradlew clean build
+```
+  
+* Build docker image and run the container
+```bash
+docker-compose up -d
+```
+  
+* Verify the container is up and running
+```bash
+docker-compose ps
+```
 
-1. Stwórz **prywatny** fork tego repozytorium https://bitbucket.org/unityttech/recruitment/fork
-2. Utwórz nową gałąź `solution` i użyj jej dodając swoje zmiany.
-3. Utwórz pull request z gałęzi `solution` utworzonej w punkcie 2. do gałęzi `master` z **TWOJEGO REPOZYTORIUM** a
-   nie **unityttech/recruitment**.
-4. Dodaj nam dostęp do odczytu do Twojego repozytorium. Szczegółowe informacje znajdziesz w pliku PDF, który od nas
-   otrzymałeś.
+You should see something similar to this:
+```bash
+Name                Command        State           Ports
+-------------------------------------------------------------------------
+recruitment_my-app_1   java -jar app.jar   Up      0.0.0.0:8080->8080/tcp
+```
 
-> **UWAGA** Na gałęzi "master" nie powinno być żadnych Twoich zmian.
+* Hit the endpoint with sample data
+Existing repo
+```bash
+curl http://localhost:8080/repositories/ddd-by-examples/library
+```
 
-> Wszelkie niestosowanie się do instrukcji może skutować wykluczeniem z procesu rekrutacji.
+Nonexistent repo
+```bash
+curl http://localhost:8080/repositories/imaginary-user/imaginary-repo
+```
+
+* Finally, stop the container
+```bash
+docker-compose down
+```
