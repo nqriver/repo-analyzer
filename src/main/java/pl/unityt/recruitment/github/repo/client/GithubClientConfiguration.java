@@ -1,6 +1,6 @@
 package pl.unityt.recruitment.github.repo.client;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -13,25 +13,22 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import reactor.core.publisher.Mono;
 
 @Configuration
+@EnableConfigurationProperties(GithubIntegrationProperties.class)
 public class GithubClientConfiguration {
 
     public static final String ERROR_MESSAGE_TEMPLATE = "Github API responded with http code {%s}";
 
-    @Value("${integration.github.api.url}")
-    private String githubApiUrl;
+    private final GithubIntegrationProperties githubProperties;
 
-    @Value("${integration.github.api.version.value}")
-    private String githubApiVersionValue;
-
-    @Value("${integration.github.api.version.key}")
-    private String githubApiVersionKey;
-
+    public GithubClientConfiguration(GithubIntegrationProperties githubProperties) {
+        this.githubProperties = githubProperties;
+    }
 
     @Bean
     WebClient webClient() {
         return WebClient.builder()
-                .baseUrl(githubApiUrl)
-                .defaultHeader(githubApiVersionKey, githubApiVersionValue)
+                .baseUrl(githubProperties.url())
+                .defaultHeader(githubProperties.versionKey(), githubProperties.versionValue())
                 .defaultStatusHandler(HttpStatusCode::is3xxRedirection, this::mapRedirection)
                 .defaultStatusHandler(HttpStatusCode::isError, this::mapClientError)
                 .build();
