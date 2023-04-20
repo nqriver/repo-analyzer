@@ -2,6 +2,8 @@ package pl.unityt.recruitment.github.repo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 class RepositoryControllerTest {
 
     public static final String GITHUB_API_200_RESPONSE_PATH = "classpath:mock-responses/response200.json";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -36,6 +39,11 @@ class RepositoryControllerTest {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @AfterEach
+    void tearDown() {
+        WireMock.resetAllRequests();
+    }
 
     @Test
     public void shouldReturnRepositoryDetails() throws Exception {
@@ -70,6 +78,36 @@ class RepositoryControllerTest {
 
                 // then
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturn404_whenRepositoryNameIsInvalid() throws Exception {
+        // given
+        String blankRepository = "";
+        String userUnderTest = "user";
+
+        // when
+        mockMvc.perform(MockMvcRequestBuilders.get("/repositories/{user}/{repo}", userUnderTest, blankRepository))
+
+                // then
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        assertNoInteractionsWithGithubRemoteService();
+    }
+
+    @Test
+    public void shouldReturn404_whenUserNameIsInvalid() throws Exception {
+        // given
+        String repositoryUnderTest = "repo";
+        String blankUser = "";
+
+        // when
+        mockMvc.perform(MockMvcRequestBuilders.get("/repositories/{user}/{repo}", blankUser, repositoryUnderTest))
+
+                // then
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        assertNoInteractionsWithGithubRemoteService();
     }
 
     @Test
@@ -115,6 +153,10 @@ class RepositoryControllerTest {
 
                 // then
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    private void assertNoInteractionsWithGithubRemoteService() {
+        WireMock.verify(0, getRequestedFor(anyUrl()));
     }
 
     private void assertResponseMatches(String jsonResponse) throws JsonProcessingException {
