@@ -44,12 +44,16 @@ public class GithubClientConfiguration {
 
     private Mono<Throwable> mapClientError(ClientResponse response) {
         if (response.statusCode().is5xxServerError()) {
-            return Mono.just(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
+            return Mono.just(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, createErrorMessage(response)));
         }
-        return Mono.just(new ResponseStatusException(response.statusCode(), String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
+        return Mono.just(new ResponseStatusException(response.statusCode(), createErrorMessage(response)));
     }
 
     private Mono<Throwable> mapRedirection(ClientResponse response) {
-        return Mono.just(new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode())));
+        return Mono.just(new ResponseStatusException(HttpStatus.BAD_REQUEST, createErrorMessage(response)));
+    }
+
+    private String createErrorMessage(ClientResponse response) {
+        return String.format(ERROR_MESSAGE_TEMPLATE, response.statusCode());
     }
 }
